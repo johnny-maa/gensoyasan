@@ -1,12 +1,22 @@
 extends Area2D
 
-@export var snap_distance: float = 50.0
-@export var element_type: String = "H"
+@export var snap_distance: float = 100.0 # スナップ判定を広げて遊びやすくする
+@export var element_type: String = "":
+	set(value):
+		element_type = value
+		if is_inside_tree() and has_node("Label"):
+			$Label.text = value + " ( ᐛ )"
+
 var dragging: bool = false
 var snapped_socket: Node2D = null
+var default_position: Vector2
 
 func _ready() -> void:
-	pass
+	# 初期位置を記憶しておく
+	default_position = global_position
+	add_to_group("elements") # グループに追加
+	if has_node("Label"):
+		$Label.text = element_type + " ( ᐛ )"
 
 func _input_event(viewport: Viewport, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -61,4 +71,10 @@ func _snap_to_closest_socket() -> void:
 		var tween = create_tween()
 		tween.tween_property(self, "global_position", closest_socket.global_position, 0.1)\
 			.set_trans(Tween.TRANS_SINE)\
+			.set_ease(Tween.EASE_OUT)
+	else:
+		# どのソケットにもスナップしなかった場合は元の位置に戻す（視覚的なフィードバック）
+		var tween = create_tween()
+		tween.tween_property(self, "global_position", default_position, 0.2)\
+			.set_trans(Tween.TRANS_BACK)\
 			.set_ease(Tween.EASE_OUT)
