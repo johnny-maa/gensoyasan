@@ -1,8 +1,10 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
-[ext_resource type="PackedScene" path="res://Element.tscn" id="1_elem"]
+[ext_resource type="Script" path="res://GameManager.gd" id="1_mgr"]
+[ext_resource type="PackedScene" path="res://Element.tscn" id="2_elem"]
 
 [node name="Main" type="Node2D"]
+script = ExtResource("1_mgr")
 
 [node name="Sockets" type="Node2D" parent="."]
 
@@ -17,11 +19,51 @@ position = Vector2(400, 200)
 
 [node name="Elements" type="Node2D" parent="."]
 
-[node name="Element1" parent="Elements" instance=ExtResource("1_elem")]
+[node name="Element1" parent="Elements" instance=ExtResource("2_elem")]
 position = Vector2(150, 450)
 
-[node name="Element2" parent="Elements" instance=ExtResource("1_elem")]
+[node name="Element2" parent="Elements" instance=ExtResource("2_elem")]
 position = Vector2(250, 450)
 
-[node name="Element3" parent="Elements" instance=ExtResource("1_elem")]
+[node name="Element3" parent="Elements" instance=ExtResource("2_elem")]
 position = Vector2(350, 450)
+
+[node name="GameUI" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="Panel" parent="GameUI"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -100.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="MessageLabel" type="Label" parent="GameUI/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+text = "店長「さあ、注文通りの元素をはめ込んでくれ！」"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ShipButton" type="Button" parent="GameUI"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -160.0
+offset_right = -20.0
+offset_bottom = -110.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 24
+text = "出荷する"
+
+[connection signal="pressed" from="GameUI/ShipButton" to="." method="_on_ship_button_pressed"]
