@@ -1,7 +1,7 @@
 extends Area2D
 
 @export var snap_distance: float = 50.0
-
+@export var element_type: String = "H"
 var dragging: bool = false
 var snapped_socket: Node2D = null
 
